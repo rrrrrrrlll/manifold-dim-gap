@@ -1,0 +1,18 @@
+# Pilot: fixes the epoch count, the time per run and the seed count before the
+# clean-manifold grid. Training and fresh-graph test loss are traced every 50 epochs.
+# Afterwards run: python -m mdgap.summarize_pilot --pilot results/pilot
+# and read results/pilot/summary/summary.md.
+experiment: pilot
+manifolds: [torus]
+m: [2, 24]
+n: [250, 16000]
+seeds: 3                 # seeds 0, 1, 2
+losses: [mse, ce]
+ambient_dim: 128
+embed_seed: 0
+noise_sigma: 0.0
+k: 10
+test_graphs: 5
+model: {hidden_size: 32, layers: 2, dropout: 0.5, gnn_conv: GCNConv}
+optim: {lr: 0.01, epochs: 2000}   # deliberately long; the trace shows when it plateaus
+trace_every: 50

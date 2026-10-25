@@ -1,0 +1,16 @@
+# Outputs and data stay out of git; commit chosen summary tables deliberately with `git add -f`.
+data/
+results/
+logs/
+plots/**/*.png
+*.pt
+*.pth
+*.npy
+*.pkl
+__pycache__/
+*.egg-info/
+.ipynb_checkpoints/
+.pytest_cache/
+
+# Personal research notes (not published)
+notes/

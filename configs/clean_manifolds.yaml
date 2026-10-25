@@ -1,0 +1,17 @@
+# Main grid on clean manifolds (flat torus, round sphere): the theorem's own setting.
+# See docs/analysis_plan.md.
+# optim.epochs and seeds were set from the pilot (docs/analysis_plan.md); do not change them.
+experiment: clean_manifolds
+manifolds: [torus, sphere]   # torus = primary (H1 test), sphere = secondary
+m: [2, 4, 6, 8, 12, 16, 24]
+n: [250, 500, 1000, 2000, 4000, 8000, 16000]
+seeds: 10
+losses: [mse, ce]            # mse = primary; ce = secondary, its gap still grows at 2000 epochs
+ambient_dim: 128
+embed_seed: 0
+noise_sigma: 0.0
+k: 10
+test_graphs: 5
+model: {hidden_size: 32, layers: 2, dropout: 0.5, gnn_conv: GCNConv}
+optim: {lr: 0.01, epochs: 2000}  # from the pilot: MSE training loss levels off by 1900; gap moves <= 11% after epoch 1000
+trace_every: 0

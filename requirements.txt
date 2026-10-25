@@ -1,0 +1,12 @@
+# Install PyTorch for your CUDA version first (https://pytorch.org), then:
+#   pip install -r requirements.txt && pip install -e .
+# Full-batch training only: no pyg-lib / torch-sparse / NeighborLoader needed.
+torch-geometric
+numpy
+scipy
+pandas
+scikit-learn
+scikit-dimension
+matplotlib
+PyYAML
+pytest
