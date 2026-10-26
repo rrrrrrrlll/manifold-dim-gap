@@ -1,0 +1,106 @@
+Sources on harder synthetic manifolds of known intrinsic dimension
+==================================================================
+Collected 2026-10-25 for the realism ladder of the synthetic-manifold experiment.
+Personal notes: this folder is git-ignored.
+"Checked" = what I confirmed from the page or paper itself. "Not checked" = not opened
+in full, or only the abstract was available.
+
+
+1. Benchmark manifold suites (standard for testing ID estimators)
+-----------------------------------------------------------------
+[1] scikit-dimension, skdim.datasets.BenchmarkManifolds
+    Docs:   https://scikit-dimension.readthedocs.io/en/latest/skdim.datasets.BenchmarkManifolds.html
+    Source: https://scikit-dimension.readthedocs.io/en/latest/_modules/skdim/datasets.html
+    Checked (source code): "a commonly used benchmark set of synthetic manifolds with known
+    intrinsic dimension", "described by Hein et al. and Campadelli et al.", adapted from GeoMLE.
+    Entries where d can be set (default d / ambient dim):
+      M1_Sphere 10/11 (d < dim)             M4_Nonlinear 4/8 (dim multiple of 2d)
+      M6_Nonlinear 6/36 (dim multiple of 2d) M8_Nonlinear 12/72 "highly curved" (dim multiple of 2d)
+      M9_Affine 20/20                        M10a-d_Cubic hypercubes (d < dim)
+      M12_Norm isotropic Gaussian            Mbeta 10/40 "smooth, nonuniform pdf" (dim = 4d)
+      Mn1/Mn2_Nonlinear 18/72, 24/96 (dim = 4d)
+      Mp1-3_Paraboloid 3/12, 6/21, 9/30 "nonlinearly embedded" (dim = 3(d+1))
+    Also: hyperBall, hyperSphere, hyperTwinPeaks, torus (2-D only), swissRoll3Sph,
+    lineDiskBall (mixed dimension), product() to combine generators.
+    Limitation for us: generators return points only, not the latent coordinates a label
+    rule needs. generate() needs both d and dim passed explicitly for a single dataset.
+
+[2] M. Hein, J.-Y. Audibert. "Intrinsic Dimensionality Estimation of Submanifolds in R^d."
+    ICML 2005. https://mlanthology.org/icml/2005/hein2005icml-intrinsic
+    PDF: https://www.ml.uni-saarland.de/Publications/HeiAud2005.pdf
+    Origin of the M1-M13 benchmark set. Checked: title, venue. Not checked: paper content.
+
+[3] P. Campadelli, E. Casiraghi, C. Ceruti, A. Rozza. "Intrinsic Dimension Estimation:
+    Relevant Techniques and a Benchmark Framework." Mathematical Problems in Engineering,
+    2015, 1-21. DOI 10.1155/2015/759567. https://ideas.repec.org/a/hin/jnlmpe/759567.html
+    Checked (abstract): proposes a benchmark framework; most estimators struggle with
+    high-ID manifolds nonlinearly embedded in higher dimensions. Not checked: which
+    properties the framework varies (full text not opened).
+
+[4] P. Tempczyk et al. "Why We Need New Benchmarks for Local Intrinsic Dimension
+    Estimation." ICLR 2026. https://mlanthology.org/iclr/2026/tempczyk2026iclr-we/
+    Checked (abstract): existing evaluations "either use overly simple synthetic data
+    (with known LID) or real datasets (with unknown LID)"; proposes mapping one manifold into
+    several domain representations, harder variants of popular datasets, and "controlled
+    transformations with known LID shifts". Not checked: how these are built (see their repo).
+
+[5] P. Tempczyk et al. "LIDL: Local Intrinsic Dimension Estimation Using Approximate
+    Likelihood." ICML 2022. https://arxiv.org/pdf/2206.14882
+    Checked (paper): synthetic benchmarks incl. uniform hypercube, Gaussians embedded by
+    coordinate duplication, swiss roll / helix / sphere, "lollipop" (0-, 1- and 2-D
+    components: varying local dimension), multiscale uniform, thin rectangle. No
+    normalizing-flow manifolds in this paper.
+
+
+2. Random nonlinear maps of a low-dimensional latent (closest to "messy embeddings")
+-----------------------------------------------------------------------------------
+[6] S. Goldt, M. Mezard, F. Krzakala, L. Zdeborova. "Modeling the influence of data
+    structure on learning in neural networks: the hidden manifold model."
+    Physical Review X 10, 041044 (2020). https://arxiv.org/pdf/1909.11500
+    Checked (Sec. II, Eqs. 4-5): x = f(F c / sqrt(D)), c in R^D with i.i.d. N(0,1) entries,
+    F a fixed D x N feature matrix, f elementwise; labels from a teacher network acting on
+    c only. Sec. V: hard/easy examples appear for the HMM but not for Gaussian inputs;
+    authors call it "a more realistic model of image-like data than the canonical
+    teacher-student setup". Note: Gaussian latent = unbounded, nonuniform (not the
+    theorem's compact, uniform setting); our "smooth random map" rung uses a torus latent.
+
+[7] U. Sharma, J. Kaplan. "Scaling Laws from the Data Manifold Dimension."
+    JMLR 23 (2022). https://www.jmlr.org/papers/v23/20-1111.html ; https://arxiv.org/pdf/2004.10802
+    Checked: random fully connected teacher with 20 inputs, k < 20 active (others zeroed),
+    inputs uniform on [-1/2, 1/2]^k; d measured from trained students' final-layer
+    activations; predicted exponent alpha ~ 4/d (in model size); CIFAR-10 CNNs match 4/alpha = d
+    "quite well". Model for "compare real systems with the synthetic prediction".
+
+
+3. Images with a controlled number of free latents
+--------------------------------------------------
+[8] P. Pope, C. Zhu, A. Abdelkader, M. Goldblum, T. Goldstein. "The Intrinsic Dimension of
+    Images and Its Impact on Learning." ICLR 2021.
+    https://ar5iv.labs.arxiv.org/html/2104.08894 ; https://arxiv.org/abs/2104.08894v1
+    Checked (full text): ImageNet BigGAN with 128 latent entries; all but d_bar entries set
+    to zero (d_bar upper-bounds the ID; for class "coffee" estimates stayed below the bound);
+    classes basenji, beagle (also daisy, soap-bubbles, coffee in the appendix). Datasets with
+    ID 16/32/64/128 at 3x32x32: "higher intrinsic dimension requires more samples to achieve
+    a given test error"; resizing images (extrinsic dimension 16-256) had "little to no
+    effect on sample complexity". Template for our "VAE-decoded images" rung.
+
+
+4. Real data is a union of manifolds with varying dimension
+-----------------------------------------------------------
+[9] B. C. A. Brown, A. L. Caterini, B. L. Ross, J. C. Cresswell, G. Loaiza-Ganem.
+    "Verifying the Union of Manifolds Hypothesis for Image Data." ICLR 2023.
+    https://arxiv.org/abs/2207.02862v3
+    Checked (abstract): data lies on "a disjoint union of manifolds of varying intrinsic
+    dimensions"; "intrinsic dimension is not constant". Not checked: whether ID varies by
+    class specifically (abstract does not say). Basis for the "one component per class" and
+    "mixed-dimension components" rungs.
+
+
+5. Ideas built from these (mine, not published protocols)
+---------------------------------------------------------
+- Smooth random map of the torus: z = (cos theta, sin theta) -> x = tanh(W2 tanh(W1 z)),
+  labels from theta (combines [6] with our compact, uniform torus latent).
+- Re-implement Mbeta / M8 / Mp-style generators so they also return latent coordinates,
+  then label from those.
+- VAE-decoded images: own MNIST VAE decoder with k free latents, re-encoded (adapts [8]).
+- Always verify the dimension: Jacobian rank at sampled points + offline estimators.
