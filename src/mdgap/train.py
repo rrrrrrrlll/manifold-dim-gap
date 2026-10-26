@@ -16,7 +16,6 @@ Re-launching the same command skips rows already present (same key columns).
 """
 import argparse
 import csv
-import subprocess
 import time
 from datetime import datetime
 from pathlib import Path
@@ -33,17 +32,6 @@ from mdgap.models import GNNModel
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 KEY_COLUMNS = ("manifold", "m", "n", "seed", "loss", "k", "epochs", "noise_sigma", "ambient_dim", "embed_seed")
-
-
-def git_commit():
-    try:
-        out = subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=REPO_ROOT,
-                             capture_output=True, text=True, timeout=5)
-        dirty = subprocess.run(["git", "status", "--porcelain", "src"], cwd=REPO_ROOT,
-                               capture_output=True, text=True, timeout=5).stdout.strip()
-        return (out.stdout.strip() + ("+dirty" if dirty else "")) if out.returncode == 0 else ""
-    except Exception:
-        return ""
 
 
 def seed_list(spec):
@@ -143,7 +131,7 @@ def run_one(cfg, manifold, m, n, seed, loss_name, device, trace_rows=None):
         "sigma_train": gstats["sigma"], "mean_degree_train": gstats["mean_degree"],
         "isolated_frac_train": gstats["isolated_frac"], "mean_degree_test": float(np.mean(test_degrees)),
         "runtime_s": time.time() - t0, "device": str(device), "torch": torch.__version__,
-        "code_commit": git_commit(), "timestamp": datetime.now().isoformat(timespec="seconds"),
+        "timestamp": datetime.now().isoformat(timespec="seconds"),
     }
 
 

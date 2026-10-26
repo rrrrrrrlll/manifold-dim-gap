@@ -1,0 +1,16 @@
+# Exploratory follow-up of experiment A: larger graphs. Does the decay at high m catch up
+# at larger N (later onset) or stay slower (slower rate)? Combine with clean_manifolds torus_mse.
+experiment: followup_large_n
+manifolds: [torus]
+m: [4, 12, 24]
+n: [32000, 64000]
+seeds: 10
+losses: [mse]
+ambient_dim: 128
+embed_seed: 0
+noise_sigma: 0.0
+k: 10
+test_graphs: 5
+model: {hidden_size: 32, layers: 2, dropout: 0.5, gnn_conv: GCNConv}
+optim: {lr: 0.01, epochs: 2000}  # as in configs/clean_manifolds.yaml
+trace_every: 0

@@ -155,4 +155,30 @@ the documentation changed.
 
 ## Deviations
 
-_(none yet)_
+- 2026-10-25, before any main-grid run: removed the `code_commit` column from the results rows
+  written by `src/mdgap/train.py` (it was bookkeeping only; no analysis reads it). The pilot CSVs
+  keep their empty `code_commit` column. Nothing in the design or the analysis changes.
+- 2026-10-26, after the main grid: the robustness arms (noise 0.05; k = 30) were run at
+  m in {4, 16} only, so the b1 test listed for them in "Secondary analyses" cannot be computed
+  (it needs beta_hat at >= 3 values of m). They are evaluated instead by the contrast
+  beta_hat(4) - beta_hat(16) with a 95% seed-bootstrap interval, next to the same contrast on the
+  clean torus (`scripts/experiment_a_followup.py`).
+- 2026-10-26: the accuracy-gap secondary analysis is run by passing `gen_gap_acc` (training minus
+  test accuracy, percentage points) through the same `analyze()` in place of the loss gap, for the
+  MSE-trained torus and sphere runs. Holm's correction uses one-sided p-values from
+  t = b1 / SE(b1) with 5 df, over the estimable b1 tests.
+- 2026-10-26, exploratory, added after seeing the data: local decay exponents between consecutive
+  sizes, exponents compared at matched gap levels, and the H3 fit with c fixed at 4.
+- 2026-10-26, exploratory follow-ups added after the main analysis, all torus, MSE, 10 seeds,
+  2,000 epochs, otherwise as the clean grid; analysed descriptively (fitted and local exponents,
+  contrasts with bootstrap intervals), no confirmatory test:
+  - larger N (`configs/followup_large_n.yaml`): m in {4, 12, 24}, N in {32,000, 64,000}, combined
+    with the clean-grid runs. Question: does the decay at high m catch up at large N (later onset)
+    or stay slower (slower rate)?
+  - model capacity (`configs/followup_capacity_h128.yaml`): hidden size 128 instead of 32,
+    m in {2, 8, 24}, all 7 sizes. Question: does the dependence on m hold when the model can
+    still fit the large-N training sets?
+  - noise sweep (`configs/followup_noise_{0.005,0.01,0.02}.yaml`): m in {4, 16}, all 7 sizes,
+    plus the ID estimators on the noisy point clouds (`mdgap.calibrate_id` with the same configs and
+    `configs/clean_torus_noise.yaml`). Question: does the fitted exponent follow the dimension
+    the graph sees at its neighbourhood scale rather than m?

@@ -1,0 +1,16 @@
+# Exploratory follow-up of experiment A: 4x wider GNN (hidden 128 instead of 32). Does the
+# dependence on m hold when the model can still fit the large-N training sets?
+experiment: followup_capacity_h128
+manifolds: [torus]
+m: [2, 8, 24]
+n: [250, 500, 1000, 2000, 4000, 8000, 16000]
+seeds: 10
+losses: [mse]
+ambient_dim: 128
+embed_seed: 0
+noise_sigma: 0.0
+k: 10
+test_graphs: 5
+model: {hidden_size: 128, layers: 2, dropout: 0.5, gnn_conv: GCNConv}
+optim: {lr: 0.01, epochs: 2000}  # as in configs/clean_manifolds.yaml
+trace_every: 0

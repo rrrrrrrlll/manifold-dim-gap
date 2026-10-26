@@ -1,0 +1,16 @@
+# Exploratory follow-up of experiment A: noise sweep, sigma = 0.005 (0 and 0.05 exist in
+# clean_manifolds and clean_torus_noise). Does the exponent follow the dimension the graph sees?
+experiment: followup_noise_0.005
+manifolds: [torus]
+m: [4, 16]
+n: [250, 500, 1000, 2000, 4000, 8000, 16000]
+seeds: 10
+losses: [mse]
+ambient_dim: 128
+embed_seed: 0
+noise_sigma: 0.005
+k: 10
+test_graphs: 5
+model: {hidden_size: 32, layers: 2, dropout: 0.5, gnn_conv: GCNConv}
+optim: {lr: 0.01, epochs: 2000}  # as in configs/clean_manifolds.yaml
+trace_every: 0
