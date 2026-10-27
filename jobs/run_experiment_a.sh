@@ -1,7 +1,7 @@
 #!/bin/bash
 # Experiment A (clean manifolds) on the GPU server: check the environment, launch
 # the runs in tmux, watch progress, pack the results for download.
-# See docs/running_experiment_a.md. Usage, from the repo folder on the server:
+# Usage, from the repo folder on the server:
 #
 #   bash jobs/run_experiment_a.sh check         # env imports, CUDA, run counts, one timed GPU run
 #   bash jobs/run_experiment_a.sh launch 0 1    # main grid + robustness checks on GPUs 0 and 1
@@ -119,7 +119,7 @@ cmd_followups() {
     command -v tmux >/dev/null || die "tmux not found"
     local f
     for f in followup_large_n followup_capacity_h128 followup_noise_0.005 followup_noise_0.01 followup_noise_0.02; do
-        [ -f "configs/$f.yaml" ] || die "configs/$f.yaml missing: upload it first (docs/running_experiment_a.md)"
+        [ -f "configs/$f.yaml" ] || die "configs/$f.yaml missing: upload it first"
     done
     local g0=${1:-0} g1=${2:-${1:-0}}
     # session A: larger N (60 runs) then hidden 128 (210 runs); session B: noise sweep (420 runs)

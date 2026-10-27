@@ -1,0 +1,12 @@
+# Experiment C2: the 7 datasets with per-sample graphs (docs/analysis_plan_bc.md). 7 x 7 x 10 = 490 runs.
+# Features: the old GNN's embeddings, all columns (data/real/*_x.npy).
+experiment: real_full
+datasets: [mnist, fmnist, pathmnist, cifar10, fer2013, celeba_gb, celeba_sb]
+features: full
+n: [250, 500, 1000, 2000, 4000, 8000, 16000]
+seeds: 10
+losses: [mse]
+k: 10
+test_graphs: 5
+model: {hidden_size: 32, layers: 2, dropout: 0.5, gnn_conv: GCNConv}
+optim: {lr: 0.01, epochs: 2000}   # as experiment A

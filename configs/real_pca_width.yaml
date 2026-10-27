@@ -1,0 +1,13 @@
+# Experiment B: PCA width within a dataset (docs/analysis_plan_bc.md). 2 x 5 x 7 x 10 = 700 runs.
+# Features: first `width` principal-component scores of the old GNN's embeddings (data/real/*_pca128.npy).
+experiment: real_pca_width
+datasets: [mnist, cifar10]
+features: pca128
+widths: [4, 8, 16, 32, 128]
+n: [250, 500, 1000, 2000, 4000, 8000, 16000]
+seeds: 10
+losses: [mse]
+k: 10
+test_graphs: 5
+model: {hidden_size: 32, layers: 2, dropout: 0.5, gnn_conv: GCNConv}
+optim: {lr: 0.01, epochs: 2000}   # as experiment A

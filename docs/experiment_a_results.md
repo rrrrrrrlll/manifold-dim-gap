@@ -149,7 +149,7 @@ size comparable to the neighbour distances largely removes the dependence on m.
 2. **Three short exploratory follow-ups** (a few hundred GPU runs each). Each answers a question
    the results raise, before moving to harder manifolds. They are recorded in the plan
    (Deviations, 2026-10-26); the configs are `configs/followup_*.yaml` and
-   `bash jobs/run_experiment_a.sh followups 0 1` runs them (`docs/running_experiment_a.md`, step 7).
+   `bash jobs/run_experiment_a.sh followups 0 1` runs them.
    - **Larger N: rate or onset?** Torus, MSE, m in {4, 12, 24}, N in {32,000, 64,000}, 10 seeds
      (60 runs). If the high-m local exponents keep rising
      towards those of low m, the dimension effect is a later onset, not a slower asymptotic rate.
